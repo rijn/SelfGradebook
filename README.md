@@ -2,6 +2,8 @@
 
 > This application is designed to provide visualization and estimated grade for students.
 
+[![Build Status](https://travis-ci.org/rijn/SelfGradebook.svg?branch=master)](https://travis-ci.org/rijn/SelfGradebook)
+
 ## Build Setup
 
 ``` bash
@@ -20,5 +22,3 @@ npm run e2e
 # run all tests
 npm test
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

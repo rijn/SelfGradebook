@@ -1,13 +1,16 @@
 sudo: false
 
+script: bash ./deploy/deploy.sh
+
+env:
+  global:
+  - ENCRYPTION_LABEL: 28c99880e8c9
+
 language: node_js
 
 node_js:
   - "5"
   - "6"
-
-install:
-  - npm install
 
 script:
   - npm run build
