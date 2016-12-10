@@ -50,6 +50,10 @@ export default {
 @import "~normalize.css/normalize.css";
 @import "./styles/color.less";
 
+body {
+  background: #eee;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -113,11 +117,16 @@ button, .button {
   padding: 7px 14px;
   margin: 7px;
   background: 0;
-  border: solid 1px @border-color-base;
+  // border: solid 1px @border-color-base;
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.1);
+
+  color: @text-color;
+
+  background: #fff;
 
   opacity: 0.7;
 
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
 
   display: inline-block;
@@ -125,10 +134,16 @@ button, .button {
   &.dark {
     color: @border-color-split;
     border: solid 1px @border-color-split;
+
+    background: none;
   }
 
   &:hover {
     opacity: 1;
   }
+}
+
+input {
+  outline: none;
 }
 </style>
