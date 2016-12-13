@@ -138,6 +138,11 @@ button, .button {
     background: none;
   }
 
+  &.warning {
+    color: #ff6600;
+    // ff6600
+  }
+
   &:hover {
     opacity: 1;
   }

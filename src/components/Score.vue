@@ -33,7 +33,7 @@ export default {
         return {
           'input': '',
           'total': 0.0,
-          'extraCredit': 0.0,
+          'extra': 0.0,
           'got': 0.0,
           'gotCredit': 0.0,
           'max': 0.0,
@@ -54,14 +54,15 @@ export default {
       this.list = []
       if (this.origin.hasOwnProperty('list')) {
         this.list = this.origin.list
-      } else if (this.origin.hasOwnProperty('iteration')) {
-        for (let i = 0; i < this.origin.iteration.num; i++) {
-          this.list.push({
-            key: this.origin.key + (this.origin.iteration.start + i),
-            proportion: this.origin.iteration.proportion,
-            max: this.origin.iteration.max
-          })
-        }
+      // } else if (this.origin.hasOwnProperty('iteration')) {
+      //   for (let i = 0; i < this.origin.iteration.num; i++) {
+      //     this.list.push({
+      //       key: this.origin.key + (this.origin.iteration.start + i),
+      //       proportion: this.origin.iteration.proportion,
+      //       max: this.origin.iteration.max
+      //       // _input: (this.origin._input[i]) || ''
+      //     })
+      //   }
       } else {
         this.delegate()
       }
@@ -71,7 +72,7 @@ export default {
           this.scores.push({
             'input': '',
             'total': 0.0,
-            'extraCredit': 0.0,
+            'extra': 0.0,
             'got': 0.0,
             'gotCredit': 0.0,
             'max': 0.0,
@@ -82,7 +83,11 @@ export default {
     },
     delegate () {
       this.score.max = this.origin.max
-      this.score.total = this.origin.proportion || this.origin.extra
+      this.score.total = this.origin.proportion || 0
+      this.score.extra = this.origin.extra || 0
+
+      this.input = this.origin._input || ''
+      this.calculateScore()
 
       this.emitUpdate()
     },
@@ -97,16 +102,30 @@ export default {
       }
       this.score.got = this.score.gotCredit / this.score.max * this.score.total
 
+      this.origin._input = this.input
+
       this.emitUpdate()
     },
     updateResult () {
-      this.score.total = this.score.got = this.score.max = this.score.done = 0
+      this.score.total = this.score.got = this.score.max = this.score.done = this.score.extra = 0
       for (let i = 0; i < this.scores.length; i++) {
         this.score.total += this.scores[i].total
         this.score.got += this.scores[i].got
         this.score.max += this.scores[i].max
         this.score.done += this.scores[i].done
+        this.score.extra += this.scores[i].extra
       }
+
+      /* copy input for iteration */
+      // if (this.origin.hasOwnProperty('iteration')) {
+      //   let _input = []
+      //   console.log(this.list.length)
+      //   for (let i = 0; i < this.list.length; i++) {
+      //     _input.push(this.list[i]._input || '')
+      //   }
+      //   console.log(_input)
+      //   // this.origin._input = _input
+      // }
 
       this.emitUpdate()
     },
@@ -114,7 +133,7 @@ export default {
       if (this.$parent.$options.name === 'Score') {
         this.$parent.updateResult()
       } else {
-        this.$emit('input', this.score)
+        this.$emit('input', this.score, this.origin)
       }
     }
   },

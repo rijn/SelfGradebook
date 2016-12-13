@@ -19,28 +19,29 @@
       </div>
     </div>
     <div class="right">
-      <div class="card select" v-if="select">
-        <span>{{select.key}} {{select.term}}</span>
-        <span style="position: absolute; right: 10px; top: 10px;">Last Modified {{select.lastModifiedTime || '[null]'}}</span>
-        <h2>{{select.name}}</h2>
+      <div class="card select" v-if="select !== null">
+        <span>{{courses[select].key}} {{courses[select].term}}</span>
+        <span style="position: absolute; right: 10px; top: 10px;">Last Modified {{courses[select].lastModifiedTime || '[null]'}}</span>
+        <h2>{{courses[select].name}}</h2>
         <div class="chart">
           <div>
             <vue-chart type="doughnut" :data="chartData"></vue-chart>
           </div>
-          <div v-if="select.score && select.score.total">
-            <h3><span class="light">Total </span>{{Number(select.score.total).toFixed(2)}}</h3>
-            <!-- <h3><span class="light">Done </span>{{select.score.done.toFixed(2)}}</h3> -->
-            <!-- <h3><span class="light">Got </span>{{select.score.got.toFixed(2)}}</h3> -->
+          <div v-if="courses[select].score && courses[select].score.total">
+            <h3><span class="light">Total </span>{{Number(courses[select].score.total).toFixed(2)}}</h3>
+            <h3><span class="light">Done </span>{{courses[select].score.done.toFixed(2)}}</h3>
+            <h3><span class="light">Got </span>{{courses[select].score.got.toFixed(2)}}</h3>
             <!-- <h3><span class="light">Lost </span>{{select.score.lost.toFixed(2)}}</h3> -->
           </div>
           <div>
             <h3><span class="light">Estimate</span></h3>
-            <!-- <h1 class="light">{{(select.score.got / select.score.done * 100).toFixed(2)}} %</h1> -->
+            <h1 class="light">{{(courses[select].score.got / courses[select].score.done * 100).toFixed(2)}} %</h1>
           </div>
         </div>
         <!-- <Score :origin="select.policy" :score="select.score" v-bind:value="select.value" v-on:input="update(arguments[0])"></Score> -->
-        <Score :origin="select.policy" :score="select.score" v-on:input="update(arguments[0])"></Score>
+        <Score :origin="courses[select].policy" :score="courses[select].score" v-on:input="update(arguments[0], arguments[1])"></Score>
       </div>
+      <a class="button warning" @click="removeCourse">Remove Course</a>
     </div>
   </div>
 </template>
@@ -62,7 +63,7 @@ export default {
         labels: ['REMAIN', 'GOT', 'LOST'],
         datasets: [{
           backgroundColor: ['#7f7f7f', '#36A2EB', '#FF6384'],
-          data: [67, 30, 3]
+          data: [1, 0, 0]
         }]
       },
       courses: [
@@ -72,37 +73,73 @@ export default {
   },
   methods: {
     switchCourse (index) {
-      this.select = this.courses[index]
+      this.select = index
     },
-    update (value) {
-      this.select.value = value
+    update (value, origin) {
+      this.courses[this.select].score = value
+      let score = this.courses[this.select].score
       this.chartData = {
         datasets: [{
           data: [
-            this.select.score.total - this.select.score.done,
-            this.select.score.got,
-            this.select.score.done - this.select.score.got
+            score.total - score.done,
+            score.got,
+            score.done - score.got
           ]
         }]
       }
+
+      this.courses[this.select].policy = origin
+      // console.log(this.courses)
+      store.set('courses', this.courses)
+    },
+    processIteration (obj) {
+      if (obj.hasOwnProperty('list')) {
+        for (let i = 0; i < obj.list.length; i++) {
+          obj.list[i] = this.processIteration(obj.list[i])
+        }
+      } else if (obj.hasOwnProperty('iteration')) {
+        obj.list = []
+        for (let i = 0; i < obj.iteration.num; i++) {
+          obj.list.push({
+            key: obj.key + (obj.iteration.start + i),
+            max: obj.iteration.max,
+            proportion: obj.iteration.proportion
+          })
+        }
+      }
+      return obj
     },
     addCourse () {
-      console.log(this.add.url)
       this.$http.get(this.add.url).then((response) => {
         response.json().then((data) => {
-          this.courses.push(data)
+          data.url = this.add.url
+
+          /* process all iteration */
+          data.policy = this.processIteration(data.policy)
+          console.log(data)
+
           this.add.url = ''
+          this.courses.push(data)
+          store.set('courses', this.courses)
+          this.switchCourse(this.courses.length - 1)
         })
       }, (response) => {
         console.log(response)
       })
+    },
+    removeCourse () {
+      this.select = null
+      this.courses.splice(this.select, 1)
+      store.set('courses', this.courses)
     }
   },
   created () {
-    // this.switchCourse(0)
-
     if (!store.enabled) {
     }
+
+    /* read from storage */
+    this.courses = store.get('courses') || []
+    console.log(store.get('courses'))
   }
 }
 </script>
