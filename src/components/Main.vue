@@ -27,18 +27,19 @@
           <div>
             <vue-chart type="doughnut" :data="chartData"></vue-chart>
           </div>
-          <div v-if="select.value && select.value.total">
-            <h3><span class="light">Total </span>{{select.value.total.toFixed(2)}}</h3>
-            <h3><span class="light">Done </span>{{select.value.done.toFixed(2)}}</h3>
-            <h3><span class="light">Got </span>{{select.value.got.toFixed(2)}}</h3>
-            <h3><span class="light">Lost </span>{{select.value.lost.toFixed(2)}}</h3>
+          <div v-if="select.score && select.score.total">
+            <h3><span class="light">Total </span>{{select.score.total.toFixed(2)}}</h3>
+            <h3><span class="light">Done </span>{{select.score.done.toFixed(2)}}</h3>
+            <h3><span class="light">Got </span>{{select.score.got.toFixed(2)}}</h3>
+            <!-- <h3><span class="light">Lost </span>{{select.score.lost.toFixed(2)}}</h3> -->
           </div>
           <div>
             <h3><span class="light">Estimate</span></h3>
-            <h1 class="light">{{(select.value.got / select.value.done * 100).toFixed(2)}} %</h1>
+            <h1 class="light">{{(select.score.got / select.score.done * 100).toFixed(2)}} %</h1>
           </div>
         </div>
-        <Score :origin="select.policy" :score="select.score" v-bind:value="select.value" v-on:input="update(arguments[0])"></Score>
+        <!-- <Score :origin="select.policy" :score="select.score" v-bind:value="select.value" v-on:input="update(arguments[0])"></Score> -->
+        <Score :origin="select.policy" :score="select.score" v-on:input="update(arguments[0])"></Score>
       </div>
     </div>
   </div>
@@ -72,9 +73,9 @@ export default {
           score: {},
           value: {},
           policy: {
-            key: 'Total',
-            list: {
-              'Lab': {
+            key: 'CS233',
+            list: [
+              {
                 key: 'Lab',
                 iteration: {
                   start: 1,
@@ -83,89 +84,90 @@ export default {
                   max: 100
                 }
               },
-              'Web Homework': {
+              {
                 key: 'Web Homework',
                 proportion: 5,
                 max: 100
               },
-              'Exam': {
+              {
                 key: 'Exam',
-                list: {
-                  'Exam 1 Combinational Design': {
+                list: [
+                  {
                     key: 'Exam 1 Combinational Design',
                     proportion: 10,
                     max: 100
                   },
-                  'Exam 2 FSM': {
+                  {
                     key: 'Exam 2 FSM',
                     proportion: 5,
                     max: 100
                   },
-                  'Exam 3 Datapath Modification': {
+                  {
                     key: 'Exam 3 Datapath Modification',
                     proportion: 5,
                     max: 100
                   },
-                  'Exam 4 MIPS fundamentals': {
+                  {
                     key: 'Exam 4 MIPS fundamentals',
                     proportion: 10,
                     max: 100
                   },
-                  'Exam 5 MIPS Advanced': {
+                  {
                     key: 'Exam 5 MIPS Advanced',
                     proportion: 5,
                     max: 100
                   },
-                  'Exam 6 Pipelining/Performanc': {
+                  {
                     key: 'Exam 6 Pipelining/Performanc',
-                    list: {
-                      'Q1': {
+                    list: [
+                      {
                         key: 'Q1',
                         proportion: 40 / 100 * 10,
                         max: 40
                       },
-                      'Q2': {
+                      {
                         key: 'Q2',
                         proportion: 30 / 100 * 10,
                         max: 30
                       },
-                      'Q3': {
+                      {
                         key: 'Q3',
                         proportion: 30 / 100 * 10,
                         max: 30
                       }
-                    }
+                    ]
                   },
-                  'Exam 7 Caching': {
+                  {
                     key: 'Exam 7 Caching',
                     proportion: 10,
                     max: 100
                   }
-                }
+                ]
               },
-              'Final': {
+              {
                 key: 'Final',
                 proportion: 10,
                 max: 100
               },
-              'Attendance': {
+              {
                 key: 'Attendance',
-                list: {
-                  'iClickers': {
+                list: [
+                  {
                     key: 'iClickers',
                     proportion: 3,
                     max: 100
                   },
-                  'iClickers Extra': {
+                  {
                     key: 'iClickers Extra',
-                    proportion: 2,
+                    extra: 2,
                     max: 100
                   },
-                  'Quizzes': {
+                  {
                     key: 'Quizzes',
                     iteration: {
                       start: 1,
                       num: 15,
+                      max: 10,
                       proportion: 2 / 15,
                       func (input) {
                         if (input < 0) input = 0
@@ -178,9 +180,9 @@ export default {
                       }
                     }
                   }
-                }
+                ]
               }
-            }
+            ]
           }
         }
       ],
@@ -196,9 +198,9 @@ export default {
       this.chartData = {
         datasets: [{
           data: [
-            this.select.value.total - this.select.value.got - this.select.value.lost,
-            this.select.value.got,
-            this.select.value.lost
+            this.select.score.total - this.select.score.done,
+            this.select.score.got,
+            this.select.score.done - this.select.score.got
           ]
         }]
       }
