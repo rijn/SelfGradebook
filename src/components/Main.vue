@@ -3,14 +3,14 @@
     <div class="left">
       <div class="add-course card">
         <span style="float: left">URL</span>
-        <input :value.sync="add.url">
-        <a class="button">Add Course</a>
+        <input v-model="add.url">
+        <a class="button" @click="addCourse">Add Course</a>
       </div>
       <div class="courses card">
         <ul>
           <li v-for="(course, index) in courses" @click="switchCourse(index)">
             <div style="font-size: 0.8em">
-              <span style="float: left">{{course.code}}</span>
+              <span style="float: left">{{course.key}}</span>
               <span style="float: right">{{course.term}}</span>
             </div>
             <span style="float: left">{{course.name}}</span>
@@ -20,7 +20,7 @@
     </div>
     <div class="right">
       <div class="card select" v-if="select">
-        <span>{{select.code}} {{select.term}}</span>
+        <span>{{select.key}} {{select.term}}</span>
         <span style="position: absolute; right: 10px; top: 10px;">Last Modified {{select.lastModifiedTime || '[null]'}}</span>
         <h2>{{select.name}}</h2>
         <div class="chart">
@@ -48,6 +48,7 @@
 <script>
 import Score from './Score'
 import VueChart from 'vue-chart'
+import store from 'store'
 
 export default {
   name: 'hello',
@@ -66,7 +67,7 @@ export default {
       },
       courses: [
         {
-          code: 'CS233',
+          key: 'CS233',
           name: 'Computer Architecture',
           term: 'Fall 2016',
           flatten: {},
@@ -204,10 +205,21 @@ export default {
           ]
         }]
       }
+    },
+    addCourse () {
+      console.log(this.add.url)
+      this.$http.get(this.add.url).then((response) => {
+        console.log(response)
+      }, (response) => {
+        console.log(response)
+      })
     }
   },
   created () {
     this.switchCourse(0)
+
+    if (!store.enabled) {
+    }
   }
 }
 </script>

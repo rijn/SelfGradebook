@@ -1,0 +1,50 @@
+{
+  "code": "CS233",
+  "name": "Computer Architecture",
+  "term": "Fall 2016",
+  "flatten": {},
+  "score": {},
+  "policy": {
+    "key": "CS233",
+    "list": [
+      {
+        "key": "Lab",
+        "iteration": {
+          "start": 1,
+          "num": 15,
+          "proportion": "25 / 15",
+          "max": 100
+        }
+      },
+      {
+        "key": "Web Homework",
+        "proportion": 5,
+        "max": 100
+      },
+      {
+        "key": "Final",
+        "proportion": 10,
+        "max": 100
+      },
+      {
+        "key": "Attendance",
+        "list": [
+          {
+            "key": "iClickers",
+            "proportion": 3,
+            "max": 100
+          },
+          {
+            "key": "Quizzes",
+            "iteration": {
+              "start": 1,
+              "num": 15,
+              "max": 10,
+              "proportion": "2 / 15"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
