@@ -12,7 +12,7 @@
         "iteration": {
           "start": 1,
           "num": 15,
-          "proportion": "25 / 15",
+          "proportion": 1.66667,
           "max": 100
         }
       },
@@ -40,7 +40,7 @@
               "start": 1,
               "num": 15,
               "max": 10,
-              "proportion": "2 / 15"
+              "proportion": 0.133333
             }
           }
         ]
