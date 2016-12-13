@@ -72,8 +72,10 @@ export default {
           score: {},
           value: {},
           policy: {
+            key: 'Total',
             list: {
               'Lab': {
+                key: 'Lab',
                 iteration: {
                   start: 1,
                   num: 15,
@@ -82,69 +84,85 @@ export default {
                 }
               },
               'Web Homework': {
+                key: 'Web Homework',
                 proportion: 5,
                 max: 100
               },
               'Exam': {
+                key: 'Exam',
                 list: {
                   'Exam 1 Combinational Design': {
+                    key: 'Exam 1 Combinational Design',
                     proportion: 10,
                     max: 100
                   },
                   'Exam 2 FSM': {
+                    key: 'Exam 2 FSM',
                     proportion: 5,
                     max: 100
                   },
                   'Exam 3 Datapath Modification': {
+                    key: 'Exam 3 Datapath Modification',
                     proportion: 5,
                     max: 100
                   },
                   'Exam 4 MIPS fundamentals': {
+                    key: 'Exam 4 MIPS fundamentals',
                     proportion: 10,
                     max: 100
                   },
                   'Exam 5 MIPS Advanced': {
+                    key: 'Exam 5 MIPS Advanced',
                     proportion: 5,
                     max: 100
                   },
                   'Exam 6 Pipelining/Performanc': {
+                    key: 'Exam 6 Pipelining/Performanc',
                     list: {
                       'Q1': {
+                        key: 'Q1',
                         proportion: 40 / 100 * 10,
                         max: 40
                       },
                       'Q2': {
+                        key: 'Q2',
                         proportion: 30 / 100 * 10,
                         max: 30
                       },
                       'Q3': {
+                        key: 'Q3',
                         proportion: 30 / 100 * 10,
                         max: 30
                       }
                     }
                   },
                   'Exam 7 Caching': {
+                    key: 'Exam 7 Caching',
                     proportion: 10,
                     max: 100
                   }
                 }
               },
               'Final': {
+                key: 'Final',
                 proportion: 10,
                 max: 100
               },
               'Attendance': {
-                // proportion: 5,
+                key: 'Attendance',
                 list: {
                   'iClickers': {
+                    key: 'iClickers',
                     proportion: 3,
                     max: 100
                   },
                   'iClickers Extra': {
+                    key: 'iClickers Extra',
                     proportion: 2,
                     max: 100
                   },
                   'Quizzes': {
+                    key: 'Quizzes',
                     iteration: {
                       start: 1,
                       num: 15,
@@ -161,114 +179,6 @@ export default {
                     }
                   }
                 }
-              }
-            }
-          }
-        },
-        {
-          code: 'CS357',
-          name: 'Numercal Method I',
-          term: 'Fall 2016',
-          flatten: {},
-          score: {},
-          value: {},
-          policy: {
-            list: {
-              'Examlet': {
-                proportion: 50,
-                iteration: {
-                  start: 1,
-                  num: 7,
-                  proportion: 50 / 6,
-                  max: 100,
-                  func (score) {
-                    return score < 100 ? score / 100 : 1 + (score - 100) / 11.1111 / (50 / 6)
-                  }
-                },
-                enableFunc (obj) {
-                  let min = 'Examlet1'
-                  for (let key in obj) {
-                    if (!obj.hasOwnProperty(key)) continue
-                    if (obj[key] < obj[min]) min = key
-                  }
-                  for (let key in obj) {
-                    if (!obj.hasOwnProperty(key)) continue
-                    if (key === min) {
-                      obj[key] = false
-                    } else {
-                      obj[key] = true
-                    }
-                  }
-                  return obj
-                }
-              },
-              'Final Exam': {
-                proportion: 25,
-                max: 100
-              },
-              'Homework': {
-                list: {
-                  'Homework 0 (Main Part)': {
-                    proportion: 20 / 7,
-                    max: 100
-                  },
-                  'Homework 1 (Main Part)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 1 (Part 1)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 2 (Main Part)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 2 (Part 1)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 3 (Main Part)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 3 (Part 1)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 4 (Main Part)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 4 (Part 1)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 5 (Main Part)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 5 (Part 1)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 6 (Main Part)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  },
-                  'Homework 6 (Part 1)': {
-                    proportion: 20 / 7 / 2,
-                    max: 100
-                  }
-                }
-              },
-              'Piazza Extra Credit': {
-                proportion: 1,
-                max: 100
-              },
-              'Online Quizzes': {
-                proportion: 5,
-                max: 100
               }
             }
           }
@@ -295,6 +205,7 @@ export default {
     }
   },
   created () {
+    this.switchCourse(0)
   }
 }
 </script>
