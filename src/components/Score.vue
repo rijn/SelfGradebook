@@ -30,7 +30,15 @@ export default {
     'score': {
       type: Object,
       default () {
-        return {}
+        return {
+          'input': '',
+          'total': 0.0,
+          'extraCredit': 0.0,
+          'got': 0.0,
+          'gotCredit': 0.0,
+          'max': 0.0,
+          'done': 0.0
+        }
       }
     }
   },

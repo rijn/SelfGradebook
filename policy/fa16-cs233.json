@@ -22,6 +22,61 @@
         "max": 100
       },
       {
+        "key": "Exam",
+        "list": [
+          {
+            "key": "Exam 1 Combinational Design",
+            "proportion": 10,
+            "max": 100
+          },
+          {
+            "key": "Exam 2 FSM",
+            "proportion": 5,
+            "max": 100
+          },
+          {
+            "key": "Exam 3 Datapath Modification",
+            "proportion": 5,
+            "max": 100
+          },
+          {
+            "key": "Exam 4 MIPS fundamentals",
+            "proportion": 10,
+            "max": 100
+          },
+          {
+            "key": "Exam 5 MIPS Advanced",
+            "proportion": 5,
+            "max": 100
+          },
+          {
+            "key": "Exam 6 Pipelining/Performanc",
+            "list": [
+              {
+                "key": "Q1",
+                "proportion": 4,
+                "max": 40
+              },
+              {
+                "key": "Q2",
+                "proportion": 3,
+                "max": 30
+              },
+              {
+                "key": "Q3",
+                "proportion": 3,
+                "max": 30
+              }
+            ]
+          },
+          {
+            "key": "Exam 7 Caching",
+            "proportion": 10,
+            "max": 100
+          }
+        ]
+      },
+      {
         "key": "Final",
         "proportion": 10,
         "max": 100
@@ -32,6 +87,11 @@
           {
             "key": "iClickers",
             "proportion": 3,
+            "max": 100
+          },
+          {
+            "key": "iClickers Extra",
+            "extra": 2,
             "max": 100
           },
           {
