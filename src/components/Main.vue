@@ -28,14 +28,14 @@
             <vue-chart type="doughnut" :data="chartData"></vue-chart>
           </div>
           <div v-if="select.score && select.score.total">
-            <h3><span class="light">Total </span>{{select.score.total.toFixed(2)}}</h3>
-            <h3><span class="light">Done </span>{{select.score.done.toFixed(2)}}</h3>
-            <h3><span class="light">Got </span>{{select.score.got.toFixed(2)}}</h3>
+            <h3><span class="light">Total </span>{{Number(select.score.total).toFixed(2)}}</h3>
+            <!-- <h3><span class="light">Done </span>{{select.score.done.toFixed(2)}}</h3> -->
+            <!-- <h3><span class="light">Got </span>{{select.score.got.toFixed(2)}}</h3> -->
             <!-- <h3><span class="light">Lost </span>{{select.score.lost.toFixed(2)}}</h3> -->
           </div>
           <div>
             <h3><span class="light">Estimate</span></h3>
-            <h1 class="light">{{(select.score.got / select.score.done * 100).toFixed(2)}} %</h1>
+            <!-- <h1 class="light">{{(select.score.got / select.score.done * 100).toFixed(2)}} %</h1> -->
           </div>
         </div>
         <!-- <Score :origin="select.policy" :score="select.score" v-bind:value="select.value" v-on:input="update(arguments[0])"></Score> -->
@@ -66,126 +66,6 @@ export default {
         }]
       },
       courses: [
-        {
-          key: 'CS233',
-          name: 'Computer Architecture',
-          term: 'Fall 2016',
-          flatten: {},
-          score: {},
-          value: {},
-          policy: {
-            key: 'CS233',
-            list: [
-              {
-                key: 'Lab',
-                iteration: {
-                  start: 1,
-                  num: 15,
-                  proportion: 25 / 15,
-                  max: 100
-                }
-              },
-              {
-                key: 'Web Homework',
-                proportion: 5,
-                max: 100
-              },
-              {
-                key: 'Exam',
-                list: [
-                  {
-                    key: 'Exam 1 Combinational Design',
-                    proportion: 10,
-                    max: 100
-                  },
-                  {
-                    key: 'Exam 2 FSM',
-                    proportion: 5,
-                    max: 100
-                  },
-                  {
-                    key: 'Exam 3 Datapath Modification',
-                    proportion: 5,
-                    max: 100
-                  },
-                  {
-                    key: 'Exam 4 MIPS fundamentals',
-                    proportion: 10,
-                    max: 100
-                  },
-                  {
-                    key: 'Exam 5 MIPS Advanced',
-                    proportion: 5,
-                    max: 100
-                  },
-                  {
-                    key: 'Exam 6 Pipelining/Performanc',
-                    list: [
-                      {
-                        key: 'Q1',
-                        proportion: 40 / 100 * 10,
-                        max: 40
-                      },
-                      {
-                        key: 'Q2',
-                        proportion: 30 / 100 * 10,
-                        max: 30
-                      },
-                      {
-                        key: 'Q3',
-                        proportion: 30 / 100 * 10,
-                        max: 30
-                      }
-                    ]
-                  },
-                  {
-                    key: 'Exam 7 Caching',
-                    proportion: 10,
-                    max: 100
-                  }
-                ]
-              },
-              {
-                key: 'Final',
-                proportion: 10,
-                max: 100
-              },
-              {
-                key: 'Attendance',
-                list: [
-                  {
-                    key: 'iClickers',
-                    proportion: 3,
-                    max: 100
-                  },
-                  {
-                    key: 'iClickers Extra',
-                    extra: 2,
-                    max: 100
-                  },
-                  {
-                    key: 'Quizzes',
-                    iteration: {
-                      start: 1,
-                      num: 15,
-                      max: 10,
-                      proportion: 2 / 15,
-                      func (input) {
-                        if (input < 0) input = 0
-                        if (input > 13) input = 13
-                        if (input <= 10) {
-                          return (input / 10)
-                        } else {
-                          return 1 + (input - 10) / 3 * (2 / 15) / (2 / 15)
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        }
       ],
       select: null
     }
@@ -209,14 +89,17 @@ export default {
     addCourse () {
       console.log(this.add.url)
       this.$http.get(this.add.url).then((response) => {
-        console.log(response)
+        response.json().then((data) => {
+          this.courses.push(data)
+          this.add.url = ''
+        })
       }, (response) => {
         console.log(response)
       })
     }
   },
   created () {
-    this.switchCourse(0)
+    // this.switchCourse(0)
 
     if (!store.enabled) {
     }

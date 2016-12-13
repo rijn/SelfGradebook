@@ -11,7 +11,7 @@
   <ul v-else>
     <li>
       {{origin.key}}
-      ({{score.gotCredit}} / {{score.max}} = {{score.got && score.got.toFixed(2)}}) &times; {{score.total.toFixed(2)}}
+      ({{score.gotCredit}} / {{score.max}} = {{score.got && score.got.toFixed(2)}}) &times; {{score.total && score.total.toFixed(2)}}
       <input v-model="input" @change="calculateScore" />
     </li>
   </ul>
@@ -30,15 +30,7 @@ export default {
     'score': {
       type: Object,
       default () {
-        return {
-          'input': '',
-          'total': 0.0,
-          'extraCredit': 0.0,
-          'got': 0.0,
-          'gotCredit': 0.0,
-          'max': 0.0,
-          'done': 0.0
-        }
+        return {}
       }
     }
   },
