@@ -89,9 +89,13 @@ export default {
     calculateScore () {
       /* eslint-disable no-eval */
       this.score.input = this.input
-      this.score.gotCredit = Number(eval('"' + this.score.input + '"'))
+      if (this.input.length > 0) {
+        this.score.gotCredit = Number(eval(this.score.input))
+        this.score.done = this.score.total
+      } else {
+        this.score.gotCredit = this.score.done = 0
+      }
       this.score.got = this.score.gotCredit / this.score.max * this.score.total
-      if (this.score.input !== '') this.score.done = this.score.total
 
       this.emitUpdate()
     },
