@@ -1,20 +1,23 @@
 <template>
-  <ul v-if="origin.list || origin.iteration">
+
+  <div v-if="origin.list || origin.iteration">
     <li>
-      {{origin.key}}
+      <span>{{origin.key}}</span>
       {{score.got && score.got.toFixed(2)}} / {{score.total && score.total.toFixed(2)}} ({{score.done && score.done.toFixed(2)}})
     </li>
-    <li v-for="(item, key) in list">
-      <Score :origin="item" :score.sync="scores[key]"></Score>
-    </li>
-  </ul>
-  <ul v-else>
-    <li>
-      {{origin.key}}
+    <ul>
+      <template v-for="(item, key) in list">
+        <Score :origin="item" :score.sync="scores[key]"></Score>
+      </template>
+    </ul>
+  </div>
+  <!-- <ul v-else> -->
+    <li v-else>
+      <span>{{origin.key}}</span>
       ({{score.gotCredit}} / {{score.max}} = {{score.got && score.got.toFixed(2)}}) &times; {{score.total && score.total.toFixed(2)}}
       <input v-model="input" @change="calculateScore" />
     </li>
-  </ul>
+  <!-- </ul> -->
 </template>
 
 <script>
@@ -54,15 +57,6 @@ export default {
       this.list = []
       if (this.origin.hasOwnProperty('list')) {
         this.list = this.origin.list
-      // } else if (this.origin.hasOwnProperty('iteration')) {
-      //   for (let i = 0; i < this.origin.iteration.num; i++) {
-      //     this.list.push({
-      //       key: this.origin.key + (this.origin.iteration.start + i),
-      //       proportion: this.origin.iteration.proportion,
-      //       max: this.origin.iteration.max
-      //       // _input: (this.origin._input[i]) || ''
-      //     })
-      //   }
       } else {
         this.delegate()
       }
@@ -115,18 +109,6 @@ export default {
         this.score.done += this.scores[i].done
         this.score.extra += this.scores[i].extra
       }
-
-      /* copy input for iteration */
-      // if (this.origin.hasOwnProperty('iteration')) {
-      //   let _input = []
-      //   console.log(this.list.length)
-      //   for (let i = 0; i < this.list.length; i++) {
-      //     _input.push(this.list[i]._input || '')
-      //   }
-      //   console.log(_input)
-      //   // this.origin._input = _input
-      // }
-
       this.emitUpdate()
     },
     emitUpdate () {
@@ -154,5 +136,59 @@ export default {
 
 <style scoped lang="less">
 @import "../styles/color.less";
+
+ul, li {
+  list-style: none;
+}
+
+ul {
+  margin: 0 0 0 30px;
+  // padding: 5px 0 5px 10px;
+  padding: 0;
+
+  li {
+    display: block;
+
+    margin: 10px 0;
+    padding: 5px 0 5px 10px;
+
+    border-left: solid 3px @info-color;
+
+    overflow: hidden;
+
+    font-size: 14px;
+    line-height: 20px;
+
+    & > * {
+      display: inline-block;
+      line-height: 20px;
+      height: 20px;
+
+      margin: 0;
+      padding: 3px;
+    }
+
+    & > input {
+      float: right;
+
+      border: 0;
+      border-bottom: solid 1px @border-color-base;
+
+      transition: border 0.3s ease;
+
+      &:hover {
+        border-bottom: solid 1px lighten(@info-color, 20%);
+      }
+
+      &:focus {
+        border-bottom: solid 1px @info-color;
+
+        & > & {
+          border-left: solid 5px @info-color;
+        }
+      }
+    }
+  }
+}
 
 </style>

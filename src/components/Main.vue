@@ -18,8 +18,8 @@
         </ul>
       </div>
     </div>
-    <div class="right">
-      <div class="card select" v-if="select !== null">
+    <div class="right" v-if="select !== null">
+      <div class="card select">
         <span>{{courses[select].key}} {{courses[select].term}}</span>
         <span style="position: absolute; right: 10px; top: 10px;">Last Modified {{courses[select].lastModifiedTime || '[null]'}}</span>
         <h2>{{courses[select].name}}</h2>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <!-- <Score :origin="select.policy" :score="select.score" v-bind:value="select.value" v-on:input="update(arguments[0])"></Score> -->
-        <Score :origin="courses[select].policy" :score="courses[select].score" v-on:input="update(arguments[0], arguments[1])"></Score>
+        <Score :origin="courses[select].policy" :score="courses[select].score" v-on:input="update(arguments[0], arguments[1])" style="margin: 30px 0"></Score>
       </div>
       <a class="button warning" @click="removeCourse">Remove Course</a>
     </div>
@@ -139,7 +139,10 @@ export default {
 
     /* read from storage */
     this.courses = store.get('courses') || []
-    console.log(store.get('courses'))
+
+    if (this.courses.length > 0) {
+      this.switchCourse(0)
+    }
   }
 }
 </script>
