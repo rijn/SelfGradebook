@@ -1,23 +1,19 @@
 <template>
 
   <div v-if="origin.list || origin.iteration">
-    <li>
+    <li v-bind:class="[score.done > 0 ? 'parent' : '']">
       <span>{{origin.key}}</span>
-      {{score.got && score.got.toFixed(2)}} / {{score.total && score.total.toFixed(2)}} ({{score.done && score.done.toFixed(2)}})
+      <span style="font-size: 12px">{{score.got && score.got.toFixed(2)}} / {{score.total && score.total.toFixed(2)}} ({{score.done && score.done.toFixed(2)}})</span>
     </li>
     <ul>
-      <template v-for="(item, key) in list">
-        <Score :origin="item" :score.sync="scores[key]"></Score>
-      </template>
+      <Score v-for="(item, key) in list" :origin="item" :score.sync="scores[key]"></Score>
     </ul>
   </div>
-  <!-- <ul v-else> -->
-    <li v-else>
-      <span>{{origin.key}}</span>
-      ({{score.gotCredit}} / {{score.max}} = {{score.got && score.got.toFixed(2)}}) &times; {{score.total && score.total.toFixed(2)}}
-      <input v-model="input" @change="calculateScore" />
-    </li>
-  <!-- </ul> -->
+  <li v-else v-bind:class="[input.length > 0 ? 'filled' : '']">
+    <span>{{origin.key}}</span>
+    <span style="font-size: 12px">({{score.gotCredit}} / {{score.max}} = {{score.got && score.got.toFixed(2)}}) &times; {{score.total && score.total.toFixed(2)}}</span>
+    <input v-model="input" @change="calculateScore" />
+  </li>
 </template>
 
 <script>
@@ -152,7 +148,13 @@ ul {
     margin: 10px 0;
     padding: 5px 0 5px 10px;
 
-    border-left: solid 3px @info-color;
+    border-left: solid 3px @border-color-base;
+    &.parent {
+      border-left: solid 3px @info-color;
+    }
+    &.filled {
+      border-left: solid 3px @info-color;
+    }
 
     overflow: hidden;
 

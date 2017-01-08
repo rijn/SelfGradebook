@@ -1,6 +1,9 @@
 <template>
   <div class="main">
     <div class="left">
+      <!-- <a class="button" @click="restoreData">Restore</a> -->
+      <a class="button" v-if="!compressedData" @click="compressData">Backup</a>
+      <a class="button" v-if="compressedData" :href="'data:application/octet-stream;charset=utf-16le;base64,' + compressedData">Download File</a>
       <div class="add-course card">
         <span style="float: left">URL</span>
         <input v-model="add.url">
@@ -56,6 +59,7 @@ export default {
   components: { Score, VueChart },
   data () {
     return {
+      compressedData: '',
       add: {
         url: ''
       },
@@ -131,6 +135,9 @@ export default {
       this.select = null
       this.courses.splice(this.select, 1)
       store.set('courses', this.courses)
+    },
+    compressData () {
+      this.compressedData = window.btoa(JSON.stringify(this.courses))
     }
   },
   created () {
